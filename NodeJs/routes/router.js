@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+//เรียกใช้งานโมเดล
+const Product = require('../models/products')
 
 
 router.get('/',(req,res)=>{
@@ -18,6 +20,22 @@ router.get('/addform',(req,res)=>{
 
 router.get('/manage',(req,res)=>{
     res.render('manage')
+})
+
+router.post('/insert',async (req,res)=>{
+    try {
+        let data = new Product({
+            name: req.body.name,
+            price: req.body.price,
+            image: req.body.image,
+            description: req.body.description,
+        });
+        await Product.saveProduct(data);
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+    }
+
 })
 
 module.exports = router;
